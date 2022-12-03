@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>	
+    <title>Carte des routes</title>	
+    <link rel="stylesheet" href="leaflet.css">
+    <script src="leaflet.js"></script>
+    <script src="nationale.geojson", type=""></script>
+	<script src="regionale.geojson", type=""></script>
+	<link rel="shortcut icon" type="image" href="images/marker-icon.png" />
+
+	<link rel="stylesheet" href="leaflet.legend.css" />
+    <script type="text/javascript" src="leaflet.legend.js"></script>
+	<style>
+		html, body {
+			height: 100%;
+			margin: 0;
+		}
+		.leaflet-container {
+			height: 400px;
+			width: 600px;
+			max-width: 100%;
+			max-height: 100%;
+		}
+	</style>
+
+	<style>#map { width: 800px; height: 500px; }
+.info { padding: 6px 8px; font: 14px/16px Arial, Helvetica, sans-serif; background: white; background: rgba(255,255,255,0.8); box-shadow: 0 0 15px rgba(0,0,0,0.2); border-radius: 5px; } .info h4 { margin: 0 0 5px; color: #777; }
+.legend { text-align: left; line-height: 18px; color: #555; } .legend i { width: 18px; height: 18px; float: left; margin-right: 8px; opacity: 0.7; }</style>
+</head>
+<body>
+
+<div id='map'></div>
+
+<script type="text/javascript">
+
+	const map = L.map('map').setView([28.98, -10.07], 5);
+                        const tiles = L.tileLayer('https://api.mapbox.com/styles/v1/elaounijassim/claz9neo300li14mpxy0alzzo/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoiZWxhb3VuaWphc3NpbSIsImEiOiJjbGF5ZmswaXIwNzhvM3FtbHhiZ2o3eG94In0.2D5g4-DntItXKK1ylEJsrQ', {
+                            maxZoom: 19,
+                            attribution: "© <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> © <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> <strong><a href='https://www.mapbox.com/map-feedback/' target='_blank'>Improve this map</a></strong>"
+                        }).addTo(map);
+	var myStyle = {
+    "color": "#FF0000",
+    "weight": 1,
+    "opacity": 0.65
+	};
+	var kima = {
+    "color": "#FFCA33",
+    "weight": 1.5,
+    "opacity": 0.65
+	};
+	/* global statesData */
+	var geojson1 = L.geoJson(nationale, {style: myStyle}).addTo(map);
+	var geojson2 = L.geoJson(regionale, {style: kima}).addTo(map);
+
+	const legend = L.control.Legend({
+    position: "bottomleft",
+    legends: [{
+        label: "Route nationale",
+        type: "image",
+        url: "marker-red.png",
+    },
+	{
+                label: "Route régionale",
+                type: "image",
+                url: "marker-red - Copie.png"
+            }]
+	}).addTo(map);
+	var baseMaps = {
+    "CARTE": tiles,
+};
+    var layerControl = L.control.layers(baseMaps).addTo(map);
+	layerControl.addOverlay(geojson1, 'Route nationale');
+	layerControl.addOverlay(geojson2, 'Route régionale');
+</script>
+</body>
+</html>
